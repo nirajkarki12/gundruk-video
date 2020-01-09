@@ -12,5 +12,6 @@
 */
 
 Route::prefix('setting')->group(function() {
+    return 'setting';
     Route::get('/', 'SettingController@index');
 });

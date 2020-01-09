@@ -10,9 +10,5 @@ use App\Setting\Models\Setting;
 class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public function __construct()
-    {
-        $setting=Setting::all();
-        View::share('setting', $setting);
-    }
+    
 }
