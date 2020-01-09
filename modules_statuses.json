@@ -1,5 +1,6 @@
 {
     "Test": true,
     "Common": true,
-    "User": true
+    "User": true,
+    "Setting": true
 }
