@@ -10,7 +10,7 @@ class Admin extends Authenticatable
 {
   use Notifiable;
   protected $table = 'admins';
-  protected $connection='mysql2';
+  protected $connection = 'mysql2';
   
   /**
    * The attributes that are mass assignable.

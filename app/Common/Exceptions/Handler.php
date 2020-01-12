@@ -59,32 +59,36 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if (!$request->ajax() || !$request->wantsJson()) {
-            // return parent::render($request, $exception);
-            return response()->view('errors.404', [], 404);
-        }
+            if (config('app.debug')) {
+                return parent::render($request, $exception);
+            }else{
+                return response()->view('errors.404', [], 404);   
+            }
+        }else{
 
-        $exception = $this->prepareException($exception);
+            $exception = $this->prepareException($exception);
 
-        if ($exception instanceof \Illuminate\Http\Exception\HttpResponseException) {
-            return $exception->getResponse();
-        }
-        if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
-            return $this->unauthenticated($request, $exception);
-        }
-        if ($exception instanceof \Illuminate\Validation\ValidationException) {
-            return $this->convertValidationExceptionToResponse($exception, $request);
-        }
+            if ($exception instanceof \Illuminate\Http\Exception\HttpResponseException) {
+                return $exception->getResponse();
+            }
+            if ($exception instanceof \Illuminate\Auth\AuthenticationException) {
+                return $this->unauthenticated($request, $exception);
+            }
+            if ($exception instanceof \Illuminate\Validation\ValidationException) {
+                return $this->convertValidationExceptionToResponse($exception, $request);
+            }
 
-        $response = [];
-        $response['status'] = false;
-        $response['code'] = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() ?: 500 : 500;
-        $response['message'] = method_exists($exception, 'getMessage') ? $exception->getMessage() ?: 'error' : 'error';
+            $response = [];
+            $response['status'] = false;
+            $response['code'] = method_exists($exception, 'getStatusCode') ? $exception->getStatusCode() ?: 500 : 500;
+            $response['message'] = method_exists($exception, 'getMessage') ? $exception->getMessage() ?: 'error' : 'error';
 
-        if (config('app.debug')) {
-            $response['trace'] = $exception->getTrace();
-            $response['line'] = $exception->getCode();
+            if (config('app.debug')) {
+                $response['trace'] = $exception->getTrace();
+                $response['line'] = $exception->getCode();
+            }
+
+            return response()->json($response, $response['code']);
         }
-
-        return response()->json($response, $response['code']);
     }
 }

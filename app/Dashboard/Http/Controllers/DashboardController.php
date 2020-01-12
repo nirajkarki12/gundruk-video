@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Common\Http\Controllers;
+namespace App\Dashboard\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Controller;
+use App\Common\Http\Controllers\BaseController;
 
-class CommonController extends Controller
+class DashboardController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +12,7 @@ class CommonController extends Controller
      */
     public function index()
     {
-        return view('common::index');
+        return view('dashboard::index');
     }
 
     /**
@@ -23,7 +21,7 @@ class CommonController extends Controller
      */
     public function create()
     {
-        return view('common::create');
+        return view('dashboard::create');
     }
 
     /**
@@ -43,7 +41,7 @@ class CommonController extends Controller
      */
     public function show($id)
     {
-        return view('common::show');
+        return view('dashboard::show');
     }
 
     /**
@@ -53,7 +51,7 @@ class CommonController extends Controller
      */
     public function edit($id)
     {
-        return view('common::edit');
+        return view('dashboard::edit');
     }
 
     /**
