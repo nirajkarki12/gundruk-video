@@ -19,9 +19,11 @@ Route::group(['prefix' => 'admin'], function(){
   Route::get('login', 'Auth\AdminAuthController@showLoginForm')->name('admin.login');
   Route::post('login', 'Auth\AdminAuthController@login')->name('admin.login.post');
 
-  Route::get('/', 'AdminController@dashboard')->name('admin.dashboard');
+	Route::middleware('admin')->group(function() {
+	  Route::get('profile', 'AdminController@profile')->name('admin.profile');
+		Route::post('/profile/save', 'AdminController@profileSave')->name('admin.profile.save');
+		Route::post('/change/password', 'AdminController@changePassword')->name('admin.change.password');
+	  Route::get('logout', 'Auth\AdminAuthController@logout')->name('admin.logout');
+	});
 
-	// Registration Routes...
-  Route::get('register', 'Auth\AdminAuthController@showRegistrationForm');
-  Route::post('register', 'Auth\AdminAuthController@register');
 });

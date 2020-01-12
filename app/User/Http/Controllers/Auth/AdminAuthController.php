@@ -31,17 +31,7 @@ class AdminAuthController extends BaseController
      * @var string
      */
     protected $redirectTo = 'admin';
-
-    protected $redirectAfterLogout = '/admin/login';
-
-    /**
-     * The Register form view that should be used.
-     *
-     * @var string
-     */
-
-    protected $registerView = 'user::admin.auth.register';
-
+    
     /**
      * Create a new authentication controller instance.
      *
@@ -62,6 +52,11 @@ class AdminAuthController extends BaseController
         return view('user::admin.auth.login');
     }
 
+    public function logout() {
+        $this->guard()->logout();
+        return redirect('/admin/login');
+    }
+    
     /**
      * Get a validator for an incoming registration request.
      *

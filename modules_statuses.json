@@ -1,6 +1,6 @@
 {
-    "Test": true,
     "Common": true,
     "User": true,
-    "Dashboard": true
+    "Dashboard": true,
+    "Setting": true
 }

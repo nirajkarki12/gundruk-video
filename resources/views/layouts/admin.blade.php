@@ -123,8 +123,7 @@
     @yield('scripts')
 
     <script type="text/javascript">
-        $("#{{$page}}").addClass("active");
-        @if(isset($sub_page)) $("#{{$sub_page}}").addClass("active"); @endif
+        
     </script>
 
     <script type="text/javascript">

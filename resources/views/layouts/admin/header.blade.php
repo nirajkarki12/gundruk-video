@@ -24,31 +24,21 @@
 
             <ul class="nav navbar-nav">
 
-                <li class="dropdown notifications-menu">
-
-                    <a href="{{url('/')}}" class="btn btn-default" target="_blank" style="color:black"> 
-                        <i class="fa fa-external-link"></i>
-                        <b> Visit Website</b>
-                        <span class="label label-warning"></span>
-                    </a>
-
-                </li>
-
                 <li class="dropdown user user-menu">
 
                     <a href="{{route('admin.profile')}}" class="dropdown-toggle" data-toggle="dropdown">
-                      <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" class="user-image" alt="User Image">
+                      <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('vendor/admin-css/dist/img/avatar.png')}} @endif" class="user-image" alt="User Image">
                       <span class="hidden-xs">{{Auth::guard('admin')->user()->name}}</span>
                     </a>
                     
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('admin-css/dist/img/avatar.png')}} @endif" class="img-circle" alt="User Image">
+                            <img src="@if(Auth::guard('admin')->user()->picture){{Auth::guard('admin')->user()->picture}} @else {{asset('vendor/admin-css/dist/img/avatar.png')}} @endif" class="img-circle" alt="User Image">
 
                             <p>
                               {{Auth::guard('admin')->user()->name}}
-                              <small>{{tr('admin')}}</small>
+                              <small>{{Auth::guard('admin')->user()->email}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -56,10 +46,10 @@
                       <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="{{route('admin.profile')}}" class="btn btn-default btn-flat">{{tr('profile')}}</a>
+                                <a href="{{route('admin.profile')}}" class="btn btn-default btn-flat">Profile</a>
                             </div>
                             <div class="pull-right">
-                                <a href="{{route('admin.logout')}}" class="btn btn-default btn-flat">{{tr('logout')}}</a>
+                                <a href="{{route('admin.logout')}}" class="btn btn-default btn-flat">Logout</a>
                             </div>
                         </li>
                     </ul>

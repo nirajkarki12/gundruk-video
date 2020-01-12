@@ -11,7 +11,6 @@
             {{ csrf_field() }}
 
             <div class="login-logo">
-               <!-- <a href="{{route('admin.login')}}"><b>{{Setting::get('site_name')}}</b></a> -->
                <input type="hidden" name="timezone" value="" id="userTimezone">
             </div>
 
