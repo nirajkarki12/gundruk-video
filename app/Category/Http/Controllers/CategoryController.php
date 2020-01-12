@@ -3,9 +3,10 @@
 namespace App\Category\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use App\Common\Http\Controllers\BaseController;
 use App\Category\Repository\CategoryRepository;
+use App\Common\Http\Helpers\Helper;
 
 class CategoryController extends BaseController
 {
@@ -24,7 +25,7 @@ class CategoryController extends BaseController
     public function index()
     {
         $categories = $this->categoryRepo->all();
-        return view('category::index', compact('categories'));
+        return view('category::admin.index', compact('categories'));
     }
 
     /**
@@ -33,7 +34,7 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        return view('category::create');
+        return view('category::admin.create');
     }
 
     /**
@@ -43,7 +44,30 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make( $request->all(), array(
+                'name' => 'required|max:255',
+                'image' => 'required|mimes:jpeg,jpg,bmp,png',
+            )
+        );
+       
+        if($validator->fails()) {
+            return back()->with('flash_error', $validator->messages()->first());
+
+        } else {
+            
+
+            if($request->hasFile('image') && $request->file('image')->isValid()) {
+                $category->image = Helper::uploadPicture($request->file('image'), 'category');
+            }
+            $category = $this->categoryRepo->create($request);
+
+            if($category) {
+                return back()->with('flash_success', 'Category added Successfully');
+            } else {
+                return back()->with('flash_error', 'Something Went Wrong, Try Again!');
+            }
+
+        }
     }
 
     /**

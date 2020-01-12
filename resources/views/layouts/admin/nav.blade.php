@@ -28,7 +28,7 @@
                     <i class="fa fa-suitcase"></i> <span>Categories</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add-category"><a href="{{route('admin.category.add')}}"><i class="fa fa-circle-o"></i>Add Category</a></li>
+                    <li id="add-category"><a href="{{route('admin.category.create')}}"><i class="fa fa-circle-o"></i>Add Category</a></li>
                     <li id="view-categories"><a href="{{route('admin.category')}}"><i class="fa fa-circle-o"></i>View Categories</a></li>
                 </ul>
             </li>

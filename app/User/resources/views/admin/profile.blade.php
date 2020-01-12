@@ -64,7 +64,7 @@
                     <div class="active tab-pane" id="adminprofile">
 
                         <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
-                            {{csrf_field()}}
+                            {{ csrf_field() }}
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
                             <div class="form-group">
@@ -117,7 +117,7 @@
                     <div class="tab-pane" id="image">
 
                         <form class="form-horizontal" action="{{(Setting::get('admin_delete_control') == 1) ? '' : route('admin.profile.save')}}" method="POST" enctype="multipart/form-data" role="form">
-                            {{csrf_field()}}
+                            {{ csrf_field() }}
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 
@@ -152,7 +152,7 @@
                     <div class="tab-pane" id="password">
 
                         <form class="form-horizontal" action="{{ (Setting::get('admin_delete_control') == 1) ? '' : route('admin.change.password')}}" method="POST" enctype="multipart/form-data" role="form">
-                            {{csrf_field()}}
+                            {{ csrf_field() }}
 
                             <input type="hidden" name="id" value="{{Auth::guard('admin')->user()->id}}">
 

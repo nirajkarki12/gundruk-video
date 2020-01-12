@@ -19,7 +19,8 @@ class CategoryRepository
     }
 
     public function create(Request $request) {
-        //
+        $data = $request->all();
+        return $this->category->create($data);
     }
 
     public function update(Request $request, int $id) {

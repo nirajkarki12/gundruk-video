@@ -13,8 +13,12 @@
 
 Route::prefix('admin/category')->middleware('admin')->group(function() {
   Route::get('/', 'CategoryController@index')->name('admin.category');
-	Route::get('add', 'CategoryController@create')->name('admin.category.add');
-	Route::get('edit/{slug}', 'CategoryController@store')->name('admin.category.edit');
+	Route::get('create', 'CategoryController@create')->name('admin.category.create');
+  Route::post('store', 'CategoryController@store')->name('admin.category.store');
+
+	Route::get('edit/{slug}', 'CategoryController@edit')->name('admin.category.edit');
+  Route::post('update/{slug}', 'CategoryController@update')->name('admin.category.update');
+
 	Route::get('delete/{slug}', 'CategoryController@destroy')->name('admin.category.delete');
 	Route::get('view/{slug}', 'CategoryController@show')->name('admin.category.view');
 });

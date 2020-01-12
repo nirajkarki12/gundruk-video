@@ -9,6 +9,10 @@ class Category extends Model
 {
     protected $fillable = ['name', 'image', 'image_full_path', 'status', 'category_id', 'slug'];
 
+    public function setImageAttribute($image) {
+    	$this->attributes['image_full_path'] = env('APP_URL') .'/storage/uploads/category/' .$image;
+    }
+
     public function categories()
     {
     	return $this->hasMany(Category::class);
