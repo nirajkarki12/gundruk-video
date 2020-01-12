@@ -38,8 +38,7 @@ class AdminController extends BaseController
         );
         
         if($validator->fails()) {
-            $error = $validator->messages()->first();
-            return back()->with('flash_error', $error);
+            return back()->with('flash_error', $validator->messages()->first());
         } else {
             
             $admin = Admin::find($request->id);
@@ -75,8 +74,7 @@ class AdminController extends BaseController
             ]);
 
         if($validator->fails()) {
-            $error = $validator->messages()->first();
-            return back()->with('flash_error', $error);
+            return back()->with('flash_error', $validator->messages()->first());
         } else {
             $admin = Admin::find($request->id);
 

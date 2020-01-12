@@ -2,5 +2,6 @@
     "Common": true,
     "User": true,
     "Dashboard": true,
-    "Setting": true
+    "Setting": true,
+    "Category": true
 }
