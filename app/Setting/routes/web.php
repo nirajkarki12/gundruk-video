@@ -11,7 +11,7 @@
 |
 */
 
-Route::prefix('setting')->group(function() {
-    return 'setting';
-    Route::get('/', 'SettingController@index');
+Route::prefix('admin')->middleware('admin')->group(function() {
+    Route::get('/setting', 'SettingController@index')->name('admin.setting');
+    Route::post('/setting/save', 'SettingController@save')->name('admin.save.settings');
 });
