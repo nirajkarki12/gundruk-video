@@ -57,7 +57,7 @@ class CategoryController extends BaseController
             
          } else {
             
-            if($file = Helper::uploadPicture($request->file('file'), 'category')){
+            if($file = Helper::uploadImage($request->file('file'), 'category')){
                $request->request->add(['image' => $file]);
 
                if(!$this->categoryRepo->create($request))

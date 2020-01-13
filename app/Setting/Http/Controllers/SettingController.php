@@ -4,15 +4,22 @@ namespace App\Setting\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Common\Http\Controllers\BaseController;
+use App\Setting\Repository\SettingRepository;
 class SettingController extends BaseController
 {
+    protected $settingRepo;
+    public function __construct(SettingRepository $settingRepo)
+    {
+        $this->settingRepo=$settingRepo;
+    }
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        return view('setting::index');
+        $result=array();
+        return view('setting::index',compact('result'));
     }
 
     /**
@@ -29,9 +36,9 @@ class SettingController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function save(Request $request)
     {
-        //
+        return $this->settingRepo->create($request);
     }
 
     /**

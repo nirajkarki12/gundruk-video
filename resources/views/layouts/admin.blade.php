@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/skins/_all-skins.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/custom.css')}}">
-
+    <link rel="shortcut icon" href="{{Setting::logo('site_icon')}}" type="image/x-icon"/>
     @yield('styles')
 
 </head>

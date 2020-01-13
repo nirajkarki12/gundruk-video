@@ -6,7 +6,7 @@ use File;
 
 class Helper
 {
-  public static function uploadPicture($image, $folder)
+  public static function uploadImage($image, $folder)
   {
       $fileName = Helper::fileName();
 
@@ -35,5 +35,5 @@ class Helper
 
     return $name;
   }
-  
+
 }

@@ -53,4 +53,8 @@ class Admin extends Authenticatable
   //     ];
   // }
 
+  public function setPictureAttribute($picture)
+  {
+      $this->attributes['picture']=\URL::to('/').'/storage/admins/'.$picture;
+  }
 }

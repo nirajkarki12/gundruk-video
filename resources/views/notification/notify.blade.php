@@ -1,3 +1,4 @@
+<div class="col-md-12">
 @if(Session::has('flash_errors'))
    @if(is_array(Session::get('flash_errors')))
       <div class="alert alert-danger">
@@ -36,3 +37,4 @@
      <button type="button" class="close" data-dismiss="alert">×</button>
    </div>
 @endif
+</div>

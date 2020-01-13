@@ -33,6 +33,13 @@
                 </ul>
             </li>
 
+
+            <!-- place at bottom -->
+            <li id="dashboard">
+              <a href="{{route('admin.setting')}}">
+                <i class="fa fa-cogs"></i> <span>Settings</span>
+              </a>
+            </li>
         </ul>
 
     </section>
