@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('image');
             $table->string('image_full_path');
-            $table->boolean('status');
+            $table->boolean('status')->default(1);
             $table->unsignedInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->string('slug')->unique();

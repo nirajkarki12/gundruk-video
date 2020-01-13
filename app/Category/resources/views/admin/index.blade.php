@@ -40,9 +40,11 @@
 							<tbody>
 								@foreach($categories as $i => $category)
 							    <tr>
-						      	<td>{{$i+1}}</td>
-						      	<td>{{$category->name}}</td>
-						      	<td><img style="height: 30px;" src="{{$category->picture}}"></td>
+						      	<td>{{ $i+1 }}</td>
+						      	<td>{{ $category->name }}</td>
+						      	<td><img src="{{ $category->image_full_path }}" width="100"></td>
+						      	<td>{{ $category->parent ? $category->parent->name : '-' }}</td>
+						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
 							      <td>
 							      		@if($category->status)
 							      			<span class="label label-success">Active</span>
@@ -58,24 +60,24 @@
 						                </a>
 						                <ul class="dropdown-menu">
 						                  	<li role="presentation">
-                                  <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('id' => $category->id))}}">Edit</a>
+                                  <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $category->slug))}}">Edit</a>
                                 </li>
 						                  	<li role="presentation">
-					                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.category.delete' , array('category_id' => $category->id))}}">Delete</a>
+					                  			<a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.category.delete' , array('slug' => $category->slug))}}">Delete</a>
 						                  	</li>
 
 																<li class="divider" role="presentation"></li>
 
 						                  	@if($category->status)
-						                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('id' => $category->id , 'status' =>0))}}">Disable</a></li>
+						                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('slug' => $category->slug , 'status' =>0))}}">Disable</a></li>
 						                  	@else
-						                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('id' => $category->id , 'status' => 1))}}">Enable</a></li>
+						                  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('slug' => $category->slug , 'status' => 1))}}">Enable</a></li>
 						                  	@endif
 
 						                  	<li class="divider" role="presentation"></li>
 
-						                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.add.sub_category' , array('category' => $category->id))}}">Add Sub Category</a></li>
-						                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.sub_categories' , array('category' => $category->id))}}">View Sub Category</a></li>
+						                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.create' , array('slug' => $category->slug))}}">Add Sub Category</a></li>
+						                  	<li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.view' , array('slug' => $category->slug))}}">View Sub Category</a></li>
 						                </ul>
           								</li>
         							</ul>

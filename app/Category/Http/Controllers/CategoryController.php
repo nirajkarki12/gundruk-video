@@ -24,7 +24,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->categoryRepo->all();
+        $categories = $this->categoryRepo->categoryWithParentPaginate();
         return view('category::admin.index', compact('categories'));
     }
 
@@ -34,7 +34,8 @@ class CategoryController extends BaseController
      */
     public function create()
     {
-        return view('category::admin.create');
+        $categories = $this->categoryRepo->categoryWithChildrens();
+        return view('category::admin.create', compact('categories'));
     }
 
     /**
@@ -44,30 +45,37 @@ class CategoryController extends BaseController
      */
     public function store(Request $request)
     {
+      try {
         $validator = Validator::make( $request->all(), array(
-                'name' => 'required|max:255',
-                'image' => 'required|mimes:jpeg,jpg,bmp,png',
+               'name' => 'required|max:255',
+               'file' => 'required|mimes:jpeg,jpg,png',
             )
         );
        
-        if($validator->fails()) {
-            return back()->with('flash_error', $validator->messages()->first());
-
-        } else {
+         if($validator->fails()) {
+            throw new \Exception($validator->messages()->first(), 1);
             
+         } else {
+            
+            if($file = Helper::uploadPicture($request->file('file'), 'category')){
+               $request->request->add(['image' => $file]);
 
-            if($request->hasFile('image') && $request->file('image')->isValid()) {
-                $category->image = Helper::uploadPicture($request->file('image'), 'category');
+               if(!$this->categoryRepo->create($request))
+               {
+                  Helper::deleteImage($file, 'category');
+                  throw new \Exception("Something Went Wrong, Try Again!", 1);
+               }
+               
+               return back()->with('flash_success', 'Category added Successfully');
+
+            }else{
+
+               throw new \Exception("Cannot upload image", 1);
             }
-            $category = $this->categoryRepo->create($request);
-
-            if($category) {
-                return back()->with('flash_success', 'Category added Successfully');
-            } else {
-                return back()->with('flash_error', 'Something Went Wrong, Try Again!');
-            }
-
-        }
+         }
+      } catch (\Exception $e) {
+         return back()->with('flash_error', $e->getMessage());
+      }
     }
 
     /**
@@ -102,12 +110,50 @@ class CategoryController extends BaseController
     }
 
     /**
+     * enable/disable category status.
+     * @param string $slug
+     * @return Response
+     */
+    public function approve($slug, int $status)
+    {
+        try {
+            if(!$slug) throw new \Exception("Category not found", 1);
+           
+            if(!$this->categoryRepo->update(['status' => $status], $slug)) throw new \Exception("Error Processing Request", 1);
+
+            if($status == 1)
+            {
+               $message = 'Category enabled Successfully';
+            }else{
+               $message = 'Category disabled Successfully';
+            }
+            return back()->with('flash_success', $message);
+               
+        } catch (\Exception $e) {
+            return back()->with('flash_error', $e->getMessage());
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      * @param string $slug
      * @return Response
      */
     public function destroy($slug)
     {
-        //
+        try {
+            if(!$slug) throw new \Exception("Category not found", 1);
+            
+            if(!$category = $this->categoryRepo->getCategory($slug)) throw new \Exception("Category not found", 1);
+            $file = $category->image;
+
+            if(!$this->categoryRepo->delete($category->id)) throw new \Exception("Error Processing Request", 1);
+            Helper::deleteImage($file, 'category');
+
+            return back()->with('flash_success', 'Category Deleted Successfully');
+               
+        } catch (\Exception $e) {
+            return back()->with('flash_error', $e->getMessage());
+        }
     }
 }

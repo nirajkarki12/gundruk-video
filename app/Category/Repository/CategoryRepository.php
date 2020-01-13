@@ -19,12 +19,11 @@ class CategoryRepository
     }
 
     public function create(Request $request) {
-        $data = $request->all();
-        return $this->category->create($data);
+        return $this->category->create($request->all());
     }
 
-    public function update(Request $request, int $id) {
-        //
+    public function update($request, string $slug) {
+        return $this->category->where('slug', $slug)->update($request);
     }
 
     public function delete(int $id) {
@@ -48,9 +47,17 @@ class CategoryRepository
         return $this->category->with($relations);
     }
 
-    public function getCategory(int $categoryId) {
-        return $this->category::where('id', $categoryId)
+    public function getCategory(string $slug) {
+        return $this->category::where('slug', $slug)
                 ->first();
+    }
+
+    public function categoryWithParentPaginate() {
+        return $this->category->with('parent')->get();
+    }
+
+    public function categoryWithChildrens() {
+        return $this->category::whereNull('category_id')->with('childrenCategories')->get();
     }
 
 }
