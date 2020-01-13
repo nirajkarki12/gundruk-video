@@ -57,7 +57,7 @@ class CategoryRepository
     }
 
     public function categoryWithChildrens() {
-        return $this->category::whereNull('category_id')->with('childrenCategories')->get();
+        return $this->category->whereNull('category_id')->with('childrenCategories')->get();
     }
 
 }

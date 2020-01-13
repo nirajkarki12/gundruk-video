@@ -1,4 +1,11 @@
-<option value="{{ $child_category->id }}">
+<option value="{{ $child_category->id }}"
+	@if(isset($selected) && ($child_category->id === $selected))
+		selected="selected"
+	@endif
+	@if(isset($disabled) && ($child_category->id === $disabled))
+		disabled="true"
+	@endif
+	>
 	@for($i = 0; $i <= $count; $i++)
 	-
 	@endfor

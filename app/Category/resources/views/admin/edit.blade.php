@@ -1,13 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', 'Add Category')
+@section('title', 'Edit Category')
 
-@section('content-header', 'Add Category')
+@section('content-header', 'Edit Category')
 
 @section('breadcrumb')
     <li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dasboard</a></li>
     <li><a href="{{route('admin.category')}}"><i class="fa fa-suitcase"></i> Categories</a></li>
-    <li class="active">Add Category</li>
+    <li class="active">Edit Category</li>
 @endsection
 
 @section('content')
@@ -21,11 +21,11 @@
             <div class="box box-primary">
 
                 <div class="box-header label-primary">
-                    <b style="font-size:18px;">Add Category</b>
+                    <b style="font-size:18px;">Edit Category ({{ $category->name }})</b>
                     <a href="{{route('admin.category')}}" class="btn btn-default pull-right">Categories</a>
                 </div>
 
-                <form class="form-horizontal" action="{{route('admin.category.store')}}" method="POST" enctype="multipart/form-data" role="form">
+                <form class="form-horizontal" action="{{route('admin.category.update', $category->slug)}}" method="POST" enctype="multipart/form-data" role="form">
                     {{ csrf_field() }}
 
                     <div class="box-body">
@@ -35,15 +35,15 @@
                             <div class="col-sm-10">
                                 <select id="category" name="category_id" class="form-control">
                                     <option value="">--Select Category--</option>
-                                    @foreach($categories as $i => $category)
-                                        <option value="{{ $category->id }}"
-                                            @if($category->id === $parentId)
+                                    @foreach($allcategories as $i => $cat)
+                                        <option value="{{ $cat->id }}"
+                                            @if($cat->id === $category->category_id)
                                                 selected="selected"
                                             @endif 
-                                            >{{ $category->name }}</option>
+                                            >{{ $cat->name }}</option>
 
-                                        @foreach ($category->childrenCategories as $childCategory)
-                                            @include('category::admin/page-parts/child_category', ['child_category' => $childCategory, 'count' => 0, 'selected' => $parentId])
+                                        @foreach ($cat->childrenCategories as $childCategory)
+                                            @include('category::admin/page-parts/child_category', ['child_category' => $childCategory, 'count' => 0, 'selected' => $category->category_id, 'disabled' => $category->id])
                                         @endforeach
                                     @endforeach
                                 </select>
@@ -54,16 +54,20 @@
                         <div class="form-group">
                             <label for="name" class="col-sm-1 control-label">Name</label>
                             <div class="col-sm-10">
-                                <input type="text" required class="form-control" id="name" name="name" placeholder="Category Name">
+                                <input type="text" required class="form-control" id="name" name="name" value="{{ $category->name }}" placeholder="Category Name">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="file" class="col-sm-1 control-label">Image</label>
+                            <label for="picture" class="col-sm-1 control-label">Image</label>
                             <div class="col-sm-10">
-                                <input type="file" required accept="image/png, image/jpeg, image/jpg" id="file" name="file" placeholder="Category Image">
+                                @if($category->image_full_path)
+                                    <img style="height: 90px;margin-bottom: 15px; border-radius:2em;" src="{{ $category->image_full_path }}">
+                                @endif
+                                <input type="file" accept="image/png, image/jpeg, image/jpg" id="file" name="file" placeholder="Category Image">
                                 <p class="help-block">Please enter .png .jpeg .jpg images only.</p>
                             </div>
+                            
                         </div>
 
                     </div>

@@ -32,10 +32,18 @@ class CategoryController extends BaseController
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function create($slug)
     {
+      $parentId = null;
+      if($slug) 
+      {
+         $category = $this->categoryRepo->getCategory($slug);
+
+         if($category) $parentId = $category->id;
+      }
+
         $categories = $this->categoryRepo->categoryWithChildrens();
-        return view('category::admin.create', compact('categories'));
+        return view('category::admin.create', compact('categories', 'parentId'));
     }
 
     /**
@@ -95,7 +103,9 @@ class CategoryController extends BaseController
      */
     public function edit($slug)
     {
-        return view('category::edit');
+        $allcategories = $this->categoryRepo->categoryWithChildrens($slug);
+        $category = $this->categoryRepo->getCategory($slug);
+        return view('category::admin/edit', compact('allcategories', 'category'));
     }
 
     /**
@@ -106,7 +116,42 @@ class CategoryController extends BaseController
      */
     public function update(Request $request, $slug)
     {
-        //
+        try {
+
+            if(!$slug) throw new \Exception("Category not found", 1);
+
+            $validator = Validator::make( $request->all(), array(
+                  'name' => 'required|max:255',
+               )
+            );
+
+            if($validator->fails()) {
+               throw new \Exception($validator->messages()->first(), 1);
+               
+            } else {
+               
+               $data = array(
+                  'name' => $request->name,
+                  'category_id' => $request->category_id,
+                  );               
+               if($request->file('file'))
+               {
+                  $data['image'] = Helper::uploadImage($request->file('file'), 'category');
+               }
+
+               $category = $this->categoryRepo->update($data, $slug);
+               
+               if(!$category)
+               {
+                  throw new \Exception("Something Went Wrong, Try Again!", 1);
+               }
+                  
+               return back()->with('flash_success', 'Category updated Successfully');
+               
+            }
+         } catch (\Exception $e) {
+            return back()->with('flash_error', $e->getMessage());
+         }
     }
 
     /**
