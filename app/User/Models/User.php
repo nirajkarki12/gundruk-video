@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','picture'
     ];
 
     /**
@@ -52,8 +52,8 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function setPictureAttribute($image)
+    public function setPictureAttribute($picture)
     {
-        $this->attributes['picture'] = env('APP_URL') .'/storage/leader/image/' .$image;
+        $this->attributes['picture'] = \URL::to('/') .'/storage/users/' .$picture;
     }
 }

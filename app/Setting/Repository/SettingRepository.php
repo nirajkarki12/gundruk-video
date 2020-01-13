@@ -7,10 +7,6 @@ use App\Setting\Models\Setting;
 use App\Common\Http\Helpers\Helper;
 class SettingRepository implements RepositoryInterface
 {
-    public function __construct()
-    {
-    }
-
     public function all()
     {
     }
