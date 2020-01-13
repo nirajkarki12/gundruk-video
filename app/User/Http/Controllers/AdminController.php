@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Common\Http\Controllers\BaseController;
 use App\User\Models\Admin;
-
+use App\Common\Http\Helpers\Helper;
 class AdminController extends BaseController
 {
     /**
@@ -48,13 +48,11 @@ class AdminController extends BaseController
             $admin->address = $request->has('address') ? $request->address : $admin->address;
 
             if($request->hasFile('picture')) {
-                // Helper::delete_picture($admin->picture, "/uploads/");
-                // $admin->picture = Helper::normal_upload_picture($request->picture);
+                Helper::deleteImage(basename($admin->picture),'admins');
+                $admin->picture = Helper::uploadImage($request->picture,'admins');
             }
-                
-            // $admin->remember_token = Helper::generate_token();
-            // $admin->is_activated = 1;
-            $admin->save();
+
+            $admin->update();
 
             return back()->with('flash_success', 'Admin Details updated Successfully');
         }
