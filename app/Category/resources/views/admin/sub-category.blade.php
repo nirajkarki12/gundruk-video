@@ -17,8 +17,8 @@
     <div class="col-xs-12">
       <div class="box box-primary">
       	<div class="box-header label-primary">
-            <b style="font-size:18px;">Categories</b>
-            <a href="{{route('admin.category.create')}}" class="btn btn-default pull-right">Add Category</a>
+            <b style="font-size:18px;">{{ $parent->name }}</b>
+            <a href="{{route('admin.category.create', ['slug' => $parent->slug])}}" class="btn btn-default pull-right">Add Category</a>
         </div>
         <div class="box-body">
 
@@ -27,10 +27,9 @@
           	<table id="example1" class="table table-bordered table-striped">
 							<thead>
 						    <tr>
-						      <th>SN.</th>
+						      <th>Id</th>
 						      <th>Name</th>
 						      <th>Image</th>
-						      <th>Parent Category</th>
 						      <th>Status</th>
 						      <th>Created At</th>
 						      <th>action</th>
@@ -43,7 +42,6 @@
 						      	<td>{{ $categories->firstItem() + $key }}</td>
 						      	<td>{{ $category->name }}</td>
 						      	<td><img src="{{ $category->image_full_path }}" width="100"></td>
-						      	<td>{{ $category->parent ? $category->parent->name : '-' }}</td>
 							      <td>
 							      		@if($category->status)
 							      			<span class="label label-success">Active</span>

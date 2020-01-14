@@ -24,7 +24,7 @@ class CategoryController extends BaseController
      */
     public function index()
     {
-        $categories = $this->categoryRepo->categoryWithParentPaginate();
+        $categories = $this->categoryRepo->categoryWithParentPaginate(10);
         return view('category::admin.index', compact('categories'));
     }
 
@@ -93,7 +93,17 @@ class CategoryController extends BaseController
      */
     public function show($slug)
     {
-        return view('category::show');
+         try {
+            if(!$slug) throw new \Exception("Category not found", 1);
+            
+            if(!$parent = $this->categoryRepo->getCategory($slug)) throw new \Exception("Category not found", 1);
+
+            $categories = $this->categoryRepo->categoryChildrens($parent->id, 10);
+
+            return view('category::admin.sub-category', compact('categories', 'parent'));
+         } catch (\Exception $e) {
+            return back()->with('flash_error', $e->getMessage());
+         }
     }
 
     /**

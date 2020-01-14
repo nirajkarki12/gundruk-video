@@ -19,9 +19,6 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
-    <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('vendor/admin-css/plugins/datatables/dataTables.bootstrap.css')}}">
-
     @yield('mid-styles')
 
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/plugins/select2/select2.min.css')}}">
@@ -72,10 +69,6 @@
     <!-- Bootstrap 3.3.6 -->
     <script src="{{asset('vendor/admin-css/bootstrap/js/bootstrap.min.js')}}"></script>
 
-    <script src="{{asset('vendor/admin-css/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-
-    <script src="{{asset('vendor/admin-css/plugins/datatables/dataTables.bootstrap.min.js')}}"></script>
-
     <!-- Select2 -->
     <script src="{{asset('vendor/admin-css/plugins/select2/select2.full.min.js')}}"></script>
     <!-- InputMask -->
@@ -91,21 +84,6 @@
     <script src="{{asset('vendor/admin-css/dist/js/app.min.js')}}"></script>
       
     <script src="{{asset('vendor/admin-css/dist/js/demo.js')}}"></script>
-
-    <!-- page script -->
-    <script>
-        $(function () {
-            $("#example1").DataTable();
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
-        });
-    </script>
 
     @yield('scripts')
 
