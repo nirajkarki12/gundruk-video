@@ -61,9 +61,3 @@
     </nav>
 
 </header>
-
-<style>
-.nav>li>a:hover,.nav>li>a:active,.nav>li>a:focus {
-    background: #fdfdfd !important;
-}
-</style>

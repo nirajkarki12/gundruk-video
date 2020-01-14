@@ -52,12 +52,29 @@ class CategoryRepository
                 ->first();
     }
 
-    public function categoryWithParentPaginate() {
-        return $this->category->with('parent')->get();
+    public function categoryWithParentPaginate($perPage = 10) {
+        return $this->category->with('parent')->paginate($perPage);
     }
 
     public function categoryWithChildrens() {
-        return $this->category::whereNull('category_id')->with('childrenCategories')->get();
+        $category = $this->category
+                    ->whereNull('category_id')
+                    ->with('childrenCategories')
+                    ;
+
+        return $category->get();
+    }
+
+    public function categoryChildrens($parentId = null, $perPage = 10) {
+        $category = $this->category
+                    ->with('childrenCategories')
+                    ;
+
+        if($parentId)
+        {
+            $category->where('category_id', $parentId);
+        }
+        return $category->paginate($perPage);
     }
 
 }

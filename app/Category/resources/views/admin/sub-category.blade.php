@@ -6,7 +6,8 @@
 
 @section('breadcrumb')
 	<li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-	<li class="active"><i class="fa fa-suitcase"></i> Categories</li>
+	<li><a href="{{route('admin.category')}}"><i class="fa fa-suitcase"></i> Categories</a></li>
+	<li class="active"><i class="fa fa-suitcase"></i> {{ $parent->name }}</li>
 @endsection
 
 @section('content')
@@ -17,9 +18,9 @@
     <div class="col-xs-12">
       <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">List of Categories</h3>
+            <h3 class="box-title">List of {{ $parent->name }} Category</h3>
             <div class="box-tools pull-right">
-            		<a href="{{route('admin.category.create')}}" class="btn btn-default pull-right">Add Category</a>
+            	<a href="{{route('admin.category.create', ['slug' => $parent->slug])}}" class="btn btn-default pull-right">Add Category</a>
             </div>
         </div>
         <div class="box-body">
@@ -29,10 +30,9 @@
           	<table id="example1" class="table table-bordered table-striped">
 							<thead>
 						    <tr>
-						      <th>SN.</th>
+						      <th>Id</th>
 						      <th>Name</th>
 						      <th>Image</th>
-						      <th>Parent Category</th>
 						      <th>Status</th>
 						      <th>Created At</th>
 						      <th>action</th>
@@ -44,19 +44,7 @@
 							    <tr>
 						      	<td>{{ $categories->firstItem() + $key }}</td>
 						      	<td>{{ $category->name }}</td>
-						      	<td><img src="{{ $category->image_full_path }}" width="30"></td>
-						      	<td>{{ $category->parent ? $category->parent->name : '-' }}</td>
-<<<<<<< HEAD
-								<td>
-									@if($category->status)
-										<span class="label label-success">Active</span>
-									@else
-										<span class="label label-warning">Inactive</span>
-									@endif
-								</td>
-						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
-							      <td>
-=======
+						      	<td><img src="{{ $category->image_full_path }}" width="100"></td>
 							      <td>
 							      		@if($category->status)
 							      			<span class="label label-success">Active</span>
@@ -66,7 +54,6 @@
 										</td>
 						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
 							      <td>
->>>>>>> 38a6f7c6f3aefa256bbc82bee3b84a108bb93e95
         							<ul class="admin-action btn btn-default">
         								<li class="dropup">
 						                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
