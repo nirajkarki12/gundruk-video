@@ -19,8 +19,6 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
-    <link rel="stylesheet" href="{{ asset('vendor/admin-css/plugins/jvectormap/jquery-jvectormap-1.2.2.css')}}">
-
     @yield('mid-styles')
 
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/plugins/select2/select2.min.css')}}">
@@ -86,22 +84,24 @@
     <!-- AdminLTE App -->
     <script src="{{asset('vendor/admin-css/dist/js/app.min.js')}}"></script>
 
-    <!-- jvectormap -->
-    <script src="{{asset('vendor/admin-css/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')}}"></script>
-
-    <script src="{{asset('vendor/admin-css/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
-
-    <script src="{{asset('vendor/admin-css/plugins/chartjs/Chart.min.js')}}"></script>
-
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <!-- <script src="{{asset('vendor/admin-css/dist/js/pages/dashboard2.js')}}"></script> -->
-
-    <script src="{{asset('vendor/admin-css/dist/js/demo.js')}}"></script>
-
     @yield('scripts')
 
     <script type="text/javascript">
-        
+        var url = window.location;
+        $('.sidebar-menu ul li').find('a').each(function () {
+            var link = new RegExp($(this).attr('href')); //Check if some menu compares inside your the browsers link
+            if (link.test(document.location.href)) {
+                if(!$(this).parents().hasClass('active')){
+                    $(this).parents('li').addClass('menu-open');
+                    $(this).parents().addClass("active");
+                    $(this).addClass("active"); //Add this too
+                }
+            }
+        });
+        // for sidebar menu entirely but not cover treeview
+        $('ul.sidebar-menu a').filter(function() {
+            return this.href == url;
+        }).parent().addClass('active');
     </script>
 
     <script type="text/javascript">

@@ -32,16 +32,15 @@ class CategoryController extends BaseController
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create($slug)
+    public function create($slug = null)
     {
-      $parentId = null;
-      if($slug) 
-      {
-         $category = $this->categoryRepo->getCategory($slug);
+         $parentId = null;
+         if($slug) 
+         {
+            $category = $this->categoryRepo->getCategory($slug);
 
-         if($category) $parentId = $category->id;
-      }
-
+            if($category) $parentId = $category->id;
+         }
         $categories = $this->categoryRepo->categoryWithChildrens();
         return view('category::admin.create', compact('categories', 'parentId'));
     }

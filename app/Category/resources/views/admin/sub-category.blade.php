@@ -6,7 +6,8 @@
 
 @section('breadcrumb')
 	<li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
-	<li class="active"><i class="fa fa-suitcase"></i> Categories</li>
+	<li><a href="{{route('admin.category')}}"><i class="fa fa-suitcase"></i> Categories</a></li>
+	<li class="active"><i class="fa fa-suitcase"></i> {{ $parent->name }}</li>
 @endsection
 
 @section('content')
