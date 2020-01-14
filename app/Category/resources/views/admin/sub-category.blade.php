@@ -17,9 +17,11 @@
 	<div class="row">
     <div class="col-xs-12">
       <div class="box box-primary">
-      	<div class="box-header label-primary">
-            <b style="font-size:18px;">{{ $parent->name }}</b>
-            <a href="{{route('admin.category.create', ['slug' => $parent->slug])}}" class="btn btn-default pull-right">Add Category</a>
+        <div class="box-header">
+            <h3 class="box-title">List of {{ $parent->name }} Category</h3>
+            <div class="box-tools pull-right">
+            	<a href="{{route('admin.category.create', ['slug' => $parent->slug])}}" class="btn btn-default pull-right">Add Category</a>
+            </div>
         </div>
         <div class="box-body">
 
