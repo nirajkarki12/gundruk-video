@@ -5,16 +5,24 @@ namespace App\Video\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-
+use App\Video\Models\Video;
+use App\Video\Repository\VideoRepository;
 class VideoController extends Controller
 {
+    protected $videoRepo;
+    public function __construct(VideoRepository $videoRepo)
+    {
+        $this->videoRepo=$videoRepo;
+    }
+
     /**
      * Display a listing of the resource.
      * @return Response
      */
     public function index()
     {
-        return view('video::index');
+        $videos=$this->videoRepo->all();
+        return view('video::index',compact('videos'));
     }
 
     /**

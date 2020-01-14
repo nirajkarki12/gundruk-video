@@ -3,8 +3,8 @@ namespace App\Setting\Repository;
 
 use App\Common\Repository\RepositoryInterface;
 use Illuminate\Http\Request;
-use App\Setting\Models\Setting;
 use App\Common\Http\Helpers\Helper;
+use App\Setting\Models\Setting;
 class SettingRepository implements RepositoryInterface
 {
     public function all()
