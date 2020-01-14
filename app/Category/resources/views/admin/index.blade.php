@@ -46,7 +46,6 @@
 						      	<td>{{ $category->name }}</td>
 						      	<td><img src="{{ $category->image_full_path }}" width="30"></td>
 						      	<td>{{ $category->parent ? $category->parent->name : '-' }}</td>
-<<<<<<< HEAD
 								<td>
 									@if($category->status)
 										<span class="label label-success">Active</span>
@@ -56,17 +55,6 @@
 								</td>
 						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
 							      <td>
-=======
-							      <td>
-							      		@if($category->status)
-							      			<span class="label label-success">Active</span>
-							       		@else
-							       			<span class="label label-warning">Inactive</span>
-							       		@endif
-										</td>
-						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
-							      <td>
->>>>>>> 38a6f7c6f3aefa256bbc82bee3b84a108bb93e95
         							<ul class="admin-action btn btn-default">
         								<li class="dropup">
 						                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
