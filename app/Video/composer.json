@@ -1,0 +1,25 @@
+{
+    "name": "Laravel Backend/video",
+    "description": "",
+    "authors": [
+        {
+            "name": "Niraj Karki",
+            "email": "nirajkarki12@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "App\\Video\\Providers\\VideoServiceProvider"
+            ],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\Video\\": ""
+        }
+    }
+}

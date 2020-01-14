@@ -42,16 +42,16 @@
 							    <tr>
 						      	<td>{{ $i+1 }}</td>
 						      	<td>{{ $category->name }}</td>
-						      	<td><img src="{{ $category->image_full_path }}" width="100"></td>
+						      	<td><img src="{{ $category->image_full_path }}" width="30"></td>
 						      	<td>{{ $category->parent ? $category->parent->name : '-' }}</td>
+								<td>
+									@if($category->status)
+										<span class="label label-success">Active</span>
+									@else
+										<span class="label label-warning">Inactive</span>
+									@endif
+								</td>
 						      	<td>{{ $category->created_at->format('Y-m-d') }}</td>
-							      <td>
-							      		@if($category->status)
-							      			<span class="label label-success">Active</span>
-							       		@else
-							       			<span class="label label-warning">Inactive</span>
-							       		@endif
-										</td>
 							      <td>
         							<ul class="admin-action btn btn-default">
         								<li class="dropup">

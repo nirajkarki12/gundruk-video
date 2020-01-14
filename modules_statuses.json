@@ -3,5 +3,7 @@
     "User": true,
     "Dashboard": true,
     "Setting": true,
-    "Category": true
+    "Category": true,
+    "Video": true,
+    "Tag": true
 }
