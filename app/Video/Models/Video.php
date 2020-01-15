@@ -10,16 +10,21 @@ use App\User\Models\Admin;
 use App\Tag\Models\Tag;
 class Video extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,Sluggable;
     protected $guarded = [];
 
     public function sluggable()
     {
         return [
             'slug'=>[
-                'source'=>['id','category_id','title']
+                'source'=>['title','id']
             ]
         ];
+    }
+
+    public function setSlugAttribute($slug)
+    {
+        $this->attributes['slug']=md5($slug.time());
     }
 
     public function admin()

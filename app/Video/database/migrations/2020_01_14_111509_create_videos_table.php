@@ -17,16 +17,15 @@ class CreateVideosTable extends Migration
             $table->increments('id');
             $table->string('slug')->unique();
             $table->string('title');
-            $table->text('tags');
             $table->text('description');
             $table->string('url');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->boolean('published')->default(1);
 
             $table->unsignedBigInteger('user_id');
             $table->unsignedInteger('category_id');
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            //$table->foreign('user_id')->references('id')->on('mysql2.users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
