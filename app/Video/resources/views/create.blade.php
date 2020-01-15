@@ -83,8 +83,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                      <div class="form-group">
-                                        <label for="category">Category *</label>
-                                        <select name="category" id="category" class="form-control">
+                                        <label for="category_id">Category *</label>
+                                        <select name="category_id" id="category_id" class="form-control">
                                             <option value="">Select Category</option>
                                         @foreach($categories as $category)
                                             <option value="{{$category->id}}">{{$category->name}}</option>
