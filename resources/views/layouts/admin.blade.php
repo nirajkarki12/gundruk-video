@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/skins/_all-skins.min.css')}}">
 
     <link rel="stylesheet" href="{{ asset('vendor/admin-css/dist/css/custom.css')}}">
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap-tagsinput.css')}}">
     <link rel="shortcut icon" href="{{Setting::logo('site_icon')}}" type="image/x-icon"/>
     @yield('styles')
 
@@ -83,6 +84,7 @@
     <script src="{{asset('vendor/admin-css/plugins/fastclick/fastclick.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{asset('vendor/admin-css/dist/js/app.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap/js/bootstrap-tagsinput.js')}}"></script>
 
     @yield('scripts')
 

@@ -7,12 +7,17 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Video\Models\Video;
 use App\Video\Repository\VideoRepository;
+use App\Category\Repository\CategoryRepository;
+use Illuminate\Support\Facades\Validator;
+
 class VideoController extends Controller
 {
     protected $videoRepo;
-    public function __construct(VideoRepository $videoRepo)
+    protected $categoryRepo;
+    public function __construct(VideoRepository $videoRepo,CategoryRepository $categoryRepo)
     {
         $this->videoRepo=$videoRepo;
+        $this->categoryRepo=$categoryRepo;
     }
 
     /**
@@ -31,7 +36,8 @@ class VideoController extends Controller
      */
     public function create()
     {
-        return view('video::create');
+        $categories=$this->categoryRepo->all();
+        return view('video::create',compact('categories'));
     }
 
     /**
@@ -41,7 +47,23 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try
+        {
+            $validator=Validator::make($request->all(),[
+                'title'=>'required|max:255',
+                'video'=>'required',
+                'tag'=>'required',
+                'description'=>'required',
+                'image'=>'required',
+                'category'=>'required'
+            ]);
+            if($validator->fails())
+            {
+                throw new \Exception($validator->errors()->first(),1);
+            }
+        } catch (\Throwable $th) {
+            return back()->with('flash_error',$th->getMessage());
+        }
     }
 
     /**
