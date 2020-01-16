@@ -52,24 +52,12 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $category->slug))}}">Edit</a>
+                                        <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $video->category->slug))}}">Edit</a>
                                         </li>
                                         <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.category.delete' , array('slug' => $category->slug))}}">Delete</a>
+                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.category.delete' , array('slug' => $video->category->slug))}}">Delete</a>
                                         </li>
 
-                                        <li class="divider" role="presentation"></li>
-
-                                            @if($category->status)
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('slug' => $category->slug , 'status' =>0))}}">Disable</a></li>
-                                            @else
-                                                <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.approve' , array('slug' => $category->slug , 'status' => 1))}}">Enable</a></li>
-                                            @endif
-
-                                        <li class="divider" role="presentation"></li>
-
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.create' , array('slug' => $category->slug))}}">Add Sub Category</a></li>
-                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="{{route('admin.category.view' , array('slug' => $category->slug))}}">View Sub Category</a></li>
                                     </ul>
                                     </li>
                                 </ul>
@@ -86,7 +74,4 @@
       </div>
     </div>
   </div>
-@endsection
-@section('scripts')
-
 @endsection

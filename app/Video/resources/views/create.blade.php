@@ -28,7 +28,7 @@
                     <div class="active tab-pane" id="general">
                         <h4>General</h4>
                         <hr>
-                        <form action="{{route('admin.video.create')}}" method="POST" enctype="multipart/form-data" role="form">
+                        <form id="form-upload" action="{{route('admin.video.create')}}" method="POST" enctype="multipart/form-data" role="form">
                             @csrf
                             <div class="box-body">
 
@@ -41,11 +41,13 @@
                                 <div class="col-md-12">
                                     <div class="form-group video-upload">
                                         <div class="video-upload text-center" style="border: solid 1px #ccc;">
-                                            <label for="video" style="cursor:pointer">
-                                                <img src="https://goo.gl/pB9rpQ"/>
-                                            </label>
-                                            <input type="file" id="video" name="video" class="form-control" style="display:none">
-                                            <p class="help-block">Video File Only *</p>
+                                            <div id="resumable-drop">
+                                                <label for="video" style="cursor:pointer">
+                                                    <img src="https://goo.gl/pB9rpQ"/>
+                                                </label>
+                                                <input type="file" id="video" data-url="{{route('admin.video.create')}}" name="video" class="form-control" style="display:none">
+                                                <p class="help-block">Video File Only *</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -100,14 +102,56 @@
                 </div>
 
             </div>
+            <div class="progress border" style="display:none">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div id="target"></div>
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Upload</button>
             </div>
             </form>
         </div>
-    
+</div>
     </div>
 @endsection
 @section('scripts')
+<script src="http://malsup.github.com/jquery.form.js"></script> 
+<script type="text/javascript">
+ $('#form-upload').submit(function(e){
+     e.preventDefault();
+    $.ajax({
+            url: '{{route("admin.video.create")}}',
+            method: 'POST',
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                $('.progress').show();
+            },
+            xhr: function() {
+                var form = $('#form-upload :input,select,textarea,button');
+                form.prop("disabled",true);
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var progress = $('.progress-bar');
+                        var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                        progress.width(percentComplete + '%');
+                        progress.html(percentComplete + ' %');
+                    }
+                }, false);
+                return xhr;
+            },
+            success:function(response){
+                //console.log(response);
+                location.reload();
+            },
+            error:function(error){
+                console.log(error);
+                var progress = $('.progress-bar');
+            }
+        });
+    });
 
+</script>
 @endsection

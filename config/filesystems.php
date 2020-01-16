@@ -48,6 +48,12 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'video' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/videos'),
+        ],
+
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -62,6 +68,36 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
+        ],
+
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'gundruknetwork.com',
+            'username' => 'video@gundruknetwork.com',
+            'password' => 'android@66',
+            // Optional FTP Settings...
+            'port' => 21,
+            // 'root' => '',
+            'passive' => false,
+            // 'ssl' => true,
+            'timeout' => 280,
+        
+        ],
+
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            //'password' => 'your-password',
+        
+            // Settings for SSH key based authentication...
+            'privateKey' => storage_path('key/gundruk_amazon_ec1.ppk'),
+            // 'password' => 'encryption-password',
+        
+            // Optional SFTP Settings...
+            'port' => env('FTP_PORT'),
+            // 'root' => '',
+            // 'timeout' => 30,
         ],
 
     ],

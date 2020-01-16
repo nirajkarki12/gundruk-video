@@ -8,6 +8,7 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use App\user\Models\User;
 use App\User\Models\Admin;
 use App\Tag\Models\Tag;
+use App\Category\Models\Category;
 class Video extends Model
 {
     use SoftDeletes,Sluggable;
@@ -40,5 +41,10 @@ class Video extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

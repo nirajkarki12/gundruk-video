@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Validator;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\ContentRangeUploadHandler;
 use Illuminate\Http\UploadedFile;
+use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use Storage;
 class VideoController extends Controller
 {
     protected $videoRepo;
@@ -25,43 +27,47 @@ class VideoController extends Controller
     public function upload(Request $request)
     {
     
+        // return $request->all();
         // create the file receiver
         $receiver = new FileReceiver("video", $request, ContentRangeUploadHandler::class);
     
         //return [$receiver];
         // check if the upload is success
-        if ($receiver->isUploaded()) {
-    
-            // receive the file
-            $save = $receiver->receive();
-    
-            // check if the upload has finished (in chunk mode it will send smaller files)
-            if ($save->isFinished()) {
-                // save the file and return any response you need
-                $detail=$this->saveFile($save->getFile());
-                $video=new Video();
-                $video->title=$request->title;
-                $video->description=$request->description;
-                $video->url=$detail['path'].'/'.$detail['name'];
-                $video->category_id=$request->category_id;
-                $video->user_id=auth()->guard('admin')->user()->id;
-                $video->save();
+        $detail=$this->saveFile($request->video);
 
-            } else {
-                // we are in chunk mode, lets send the current progress
+
+
+        // if ($receiver->isUploaded()) {
     
-                /** @var ContentRangeUploadHandler $handler */
-                $handler = $save->handler();
+        //     // receive the file
+        //     $save = $receiver->receive();
     
-                return response()->json([
-                    "start" => $handler->getBytesStart(),
-                    "end" => $handler->getBytesEnd(),
-                    "total" => $handler->getBytesTotal()
-                ]);
-            }
-        } else {
-            throw new UploadMissingFileException();
-        }
+        //     // check if the upload has finished (in chunk mode it will send smaller files)
+        //     if ($save->isFinished()) {
+        //         // save the file and return any response you need
+        //         // $video=new Video();
+        //         // $video->title=$request->title;
+        //         // $video->description=$request->description;
+        //         // $video->url=$detail['path'].$detail['name'];
+        //         // $video->category_id=$request->category_id;
+        //         // $video->user_id=auth()->guard('admin')->user()->id;
+        //         // $video->save();
+        //         //return redirect()->back()->with('flash_success','Video Upload Successful');
+        //     } else {
+        //         // we are in chunk mode, lets send the current progress
+    
+        //         /** @var ContentRangeUploadHandler $handler */
+        //         $handler = $save->handler();
+    
+        //         return response()->json([
+        //             "start" => $handler->getBytesStart(),
+        //             "end" => $handler->getBytesEnd(),
+        //             "total" => $handler->getBytesTotal()
+        //         ]);
+        //     }
+        // } else {
+        //     throw new UploadMissingFileException();
+        // }
     }
     
     protected function saveFile(UploadedFile $file)
@@ -72,10 +78,13 @@ class VideoController extends Controller
         // Group files by the date (week
         $dateFolder = date("Y-m");
         // Build the file path
-        $filePath = "upload/{$mime}/{$dateFolder}/";
-        $finalPath = storage_path("app/".$filePath);
+        $filePath = "ftp/{$mime}/{$dateFolder}/";
+        //$finalPath = storage_path("app/".$filePath);
         // move the file name
-        $file->move($finalPath, $fileName);
+        $disk=Storage::disk('sftp');
+        $disk->put($filePath.$fileName,\fopen($file,'r+'));
+
+        // $file->move($finalPath, $fileName);
         return ['path'=>$filePath,'name'=>$fileName,'mime'=>$mime];
         return response()->json([
             'path' => $filePath,
