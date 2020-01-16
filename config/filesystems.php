@@ -72,9 +72,9 @@ return [
 
         'ftp' => [
             'driver' => 'ftp',
-            'host' => 'gundruknetwork.com',
-            'username' => 'video@gundruknetwork.com',
-            'password' => 'android@66',
+            'host' => '',
+            'username' => '',
+            'password' => '',
             // Optional FTP Settings...
             'port' => 21,
             // 'root' => '',
@@ -89,15 +89,14 @@ return [
             'host' => env('FTP_HOST'),
             'username' => env('FTP_USERNAME'),
             //'password' => 'your-password',
-        
             // Settings for SSH key based authentication...
             'privateKey' => storage_path('key/gundruk_amazon_ec1.ppk'),
             // 'password' => 'encryption-password',
-        
             // Optional SFTP Settings...
             'port' => env('FTP_PORT'),
             // 'root' => '',
             // 'timeout' => 30,
+        
         ],
 
     ],
