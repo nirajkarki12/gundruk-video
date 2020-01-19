@@ -52,7 +52,10 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $video->category->slug))}}">Edit</a>
+                                            <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $video->category->slug))}}">Edit</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video.show' , $video->slug)}}">Watch</a>
                                         </li>
                                         <li role="presentation">
                                             <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.category.delete' , array('slug' => $video->category->slug))}}">Delete</a>

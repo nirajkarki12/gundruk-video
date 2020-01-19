@@ -6,37 +6,40 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use App\Video\Models\Video;
+use App\Tag\Repository\TagRepository;
 use App\Video\Repository\VideoRepository;
 use App\Category\Repository\CategoryRepository;
 use Illuminate\Support\Facades\Validator;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Pion\Laravel\ChunkUpload\Handler\ContentRangeUploadHandler;
 use Illuminate\Http\UploadedFile;
+use App\Tag\Models\Tag;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
+use App\Common\Http\Helpers\Helper;
 use Storage;
+use Carbon\Carbon;
+use App\Video\Stream\Stream;
 class VideoController extends Controller
 {
     protected $videoRepo;
-    protected $categoryRepo;
-    public function __construct(VideoRepository $videoRepo,CategoryRepository $categoryRepo)
+    protected $categoryRepo,$tagModel;
+    public function __construct(VideoRepository $videoRepo,CategoryRepository $categoryRepo,Tag $tagModel)
     {
         $this->videoRepo=$videoRepo;
         $this->categoryRepo=$categoryRepo;
+        $this->tagModel=$tagModel;
     }
     
     public function upload(Request $request)
     {
+        // $detail=$this->saveFile($request->video);
     
         // return $request->all();
         // create the file receiver
-        $receiver = new FileReceiver("video", $request, ContentRangeUploadHandler::class);
+        //$receiver = new FileReceiver("video", $request, ContentRangeUploadHandler::class);
     
         //return [$receiver];
         // check if the upload is success
-        $detail=$this->saveFile($request->video);
-
-
-
         // if ($receiver->isUploaded()) {
     
         //     // receive the file
@@ -81,7 +84,7 @@ class VideoController extends Controller
         $filePath = "ftp/{$mime}/{$dateFolder}/";
         //$finalPath = storage_path("app/".$filePath);
         // move the file name
-        $disk=Storage::disk('sftp');
+        $disk=Storage::disk('video');
         $disk->put($filePath.$fileName,\fopen($file,'r+'));
 
         // $file->move($finalPath, $fileName);
@@ -132,6 +135,7 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
+        $publish_date=new \DateTime($request->publish_at);
         try
         {
             $validator=Validator::make($request->all(),[
@@ -140,14 +144,34 @@ class VideoController extends Controller
                 'tag'=>'required',
                 'description'=>'required',
                 'image'=>'required',
-                'category'=>'required'
+                'category_id'=>'required',
             ]);
             if($validator->fails())
             {
                 throw new \Exception($validator->errors()->first(),1);
             }
+            $input=$request->all();
+            $detail=$this->saveFile($request->video);
+
+            if($request->has('image'))
+            {
+                $input['image']=Helper::uploadImage($request->image, 'videos/images');
+            }
+            $input['user_id']=auth()->guard('admin')->user()->id;
+            $input['url']=$detail['path'].$detail['name'];
+            if($this->videoRepo->create($input))
+            {
+                return response()->json([
+                    'status'=>true,
+                    'message'=>'Video created successfully'
+                ]);
+            }
+            else
+            {
+                throw new \Exception("Sorry! video can not be uploaded this time.",1);
+            }
         } catch (\Throwable $th) {
-            return back()->with('flash_error',$th->getMessage());
+            return trigger_error($th->getMessage());
         }
     }
 
@@ -156,9 +180,19 @@ class VideoController extends Controller
      * @param int $id
      * @return Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        return view('video::show');
+        $video=$this->videoRepo->show($slug);
+        return view('video::show',compact('video','slug'));
+    }
+
+    public function stream($slug)
+    {
+        $video=$this->videoRepo->show($slug);
+        $stream=new Stream($video->url);
+        return response()->stream(function() use ($stream){
+            $stream->start();
+        });
     }
 
     /**

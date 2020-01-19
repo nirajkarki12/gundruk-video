@@ -2,10 +2,9 @@
 namespace App\Video\Repository;
 
 use App\Common\Repository\RepositoryInterface;
-use Illuminate\Http\Request;
 use App\Common\Http\Helpers\Helper;
 use App\Video\Models\Video;
-class VideoRepository implements RepositoryInterface
+class VideoRepository
 {
     protected $video;
     public function __construct(Video $video)
@@ -17,9 +16,19 @@ class VideoRepository implements RepositoryInterface
         return $this->video::paginate(1);   
     }
 
-    public function create(Request $request)
+    public function create($data=[])
     {
-
+        $input['title']=$data['title'];
+        $input['url']=$data['url'];
+        $input['description']=$data['description'];
+        $input['image']=$data['image'];
+        $input['category_id']=$data['category_id'];
+        $input['user_id']=$data['user_id'];
+        if($this->video::create($input))
+        {
+            return true;
+        }
+        return false;
     }
 
     public function update(Request $request, int $id)
@@ -32,9 +41,9 @@ class VideoRepository implements RepositoryInterface
 
     }
 
-    public function show(int $id)
+    public function show($slug)
     {
-
+        return $this->video::where('slug',$slug)->first();
     }
 
 }

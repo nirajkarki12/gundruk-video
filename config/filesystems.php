@@ -51,6 +51,7 @@ return [
         'video' => [
             'driver' => 'local',
             'root' => storage_path('app/public/videos'),
+            'visibility'=>'public'
         ],
 
 

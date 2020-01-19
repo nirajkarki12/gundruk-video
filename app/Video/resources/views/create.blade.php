@@ -72,6 +72,14 @@
 
                             <div class="col-md-12">
                                 <div class="form-group">
+                                    <label for="publish_at">Publish Time *</label>
+                                    <input type="datetime-local" name="publish_at" value="" class="form-control" id="publish_at" style="display:block" placeholder="Time to publish the video">
+                                    <span></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
                                     <label for="tagname">Description *</label>
                                     <textarea name="description" id="description" class="form-control" placeholder="Description of video" style="height:150px"></textarea>
                                 </div>
@@ -129,8 +137,8 @@
                 $('.progress').show();
             },
             xhr: function() {
-                var form = $('#form-upload :input,select,textarea,button');
-                form.prop("disabled",true);
+                // var form = $('#form-upload :input,select,textarea,button');
+                // form.prop("disabled",true);
                 var xhr = new window.XMLHttpRequest();
                 xhr.upload.addEventListener("progress", function(evt) {
                     if (evt.lengthComputable) {
@@ -143,12 +151,12 @@
                 return xhr;
             },
             success:function(response){
-                //console.log(response);
+                alert("Upload Successfull");
                 location.reload();
             },
             error:function(error){
                 console.log(error);
-                var progress = $('.progress-bar');
+                alert(error.responseJSON.message);
             }
         });
     });

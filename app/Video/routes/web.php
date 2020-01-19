@@ -14,5 +14,7 @@
 Route::prefix('admin/videos')->middleware('admin')->group(function() {
     Route::get('/', 'VideoController@index')->name('admin.videos');
     Route::get('/create','VideoController@create')->name('admin.video.create');
-    Route::post('/create','VideoController@upload')->name('admin.video.store');
+    Route::post('/create','VideoController@store')->name('admin.video.store');
+    Route::get('/show/{slug}','VideoController@show')->name('admin.video.show');
+    Route::get('/stream/{slug}','VideoController@stream')->name('admin.video.stream');
 });

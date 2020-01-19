@@ -28,6 +28,16 @@ class Video extends Model
         $this->attributes['slug']=md5($slug.time());
     }
 
+    public function getUrlAttribute($video)
+    {
+        return \public_path('storage/videos/'.$video);
+        return \URL::to('/').\Storage::url('videos/'.$video);
+    }
+
+    public function getImageAttribute($image)
+    {
+        return \Storage::path('images/'.$image);
+    }
     public function admin()
     {
         return $this->belongsTo(Admin::class,'user_id');
