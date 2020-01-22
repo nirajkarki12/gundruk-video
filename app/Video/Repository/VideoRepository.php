@@ -5,19 +5,21 @@ use App\Common\Repository\RepositoryInterface;
 use App\Common\Http\Helpers\Helper;
 use App\Video\Models\Video;
 use Illuminate\Support\Facades\Storage;
+use App\Common\Http\Helpers\Settings;
+use App\Common\Repository\MainRepository;
 
-class VideoRepository
+class VideoRepository extends MainRepository
 {
     protected $video,$disk;
     public function __construct(Video $video)
     {
+        parent::__construct();
         $this->video=$video;
-        $this->disk=Storage::disk('video');
-
+        $this->disk=Storage::disk($this->uploadDisk);
     }
     public function all()
     {
-        return $this->video::paginate(1);   
+        return $this->video::where('user_id',auth()->guard('admin')->user()->id)->paginate($this->pagination);   
     }
 
     public function create($data=[])
@@ -55,12 +57,12 @@ class VideoRepository
 
     public function show($slug)
     {
-        return $this->video::where('slug',$slug)->first();
+        return $this->video::where('slug',$slug)->withTrashed()->first();
     }
 
     public function deleted()
     {
-        return $this->video::onlyTrashed()->orderBy('deleted_at','desc')->paginate(3);
+        return $this->video::onlyTrashed()->orderBy('deleted_at','desc')->paginate($this->pagination);
     }
 
     public function unDelete($slug)

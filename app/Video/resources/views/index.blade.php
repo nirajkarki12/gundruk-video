@@ -45,7 +45,7 @@
                             <td>{{$video->category->name}}</td>
                             <td>{{$video->published?'Published':'Pending'}}</td>
                             <td>
-                                <ul class="admin-action btn btn-default">
+                                <ul class="admin-action btn btn-default pull-right">
                                     <li class="dropup">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                         action <span class="caret"></span>

@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Videos')
+@section('title', 'Deleted Videos')
 
-@section('content-header', 'Videos')
+@section('content-header', 'Deleted Videos')
 
 @section('breadcrumb')
 	<li><a href="{{route('admin.dashboard')}}"><i class="fa fa-dashboard"></i>Dashboard</a></li>
@@ -16,9 +16,9 @@
     <div class="col-xs-12">
       <div class="box box-primary">
         <div class="box-header">
-            <h3 class="box-title">List of Videos</h3>
+            <h3 class="box-title">Trashed Items</h3>
             <div class="box-tools pull-right">
-            		<a href="{{route('admin.video.create')}}" class="btn btn-default pull-right">Add Video</a>
+            	<a href="{{route('admin.video.create')}}" class="btn btn-default pull-right">Add Video</a>
             </div>
         </div>
         <div class="box-body">
@@ -48,7 +48,7 @@
                             <td>{{$video->deleted_at}}</td>
 
                             <td>
-                                <ul class="admin-action btn btn-default">
+                                <ul class="admin-action btn btn-default pull-right">
                                     <li class="dropup">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                         action <span class="caret"></span>

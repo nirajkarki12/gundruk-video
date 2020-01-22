@@ -67,6 +67,13 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tagname">Pagination Per Page</label>
+                                        <input type="number" class="form-control" name="pagination" value="{{Setting::get('pagination')  }}" id="pagination" placeholder="Number of items to show">
+                                    </div>
+                                </div>
+
                           </div>
                           <!-- /.box-body -->
 
@@ -84,8 +91,13 @@
                                 </div>
                                 <div class="col-lg-3">
                                      <div class="form-group">
-                                        <label for="amount">Amount</label>
-                                        <input type="text" class="form-control" value="{{Setting::get('amount')  }}" name="amount" id="amount" placeholder="{{'amount'}}" pattern="[0-9]{1,}">
+                                        <label for="uploaddisk">File Upload Disk</label>
+                                        <select name="uploaddisk" id="uploaddisk" class="form-control">
+                                            <option value="">Select Upload Disk</option>
+                                            @foreach($disks as $disk)
+                                            <option value="{{$disk['name']}}" {{$disk['name'] == Setting::get('uploaddisk')?'selected':''}}>{{ucfirst($disk['name'])}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">

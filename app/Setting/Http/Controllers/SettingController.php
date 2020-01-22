@@ -19,7 +19,8 @@ class SettingController extends BaseController
     public function index()
     {
         $result=array();
-        return view('setting::index',compact('result'));
+        $disks=config('filesystems.disks');
+        return view('setting::index',compact('result','disks'));
     }
 
     /**

@@ -44,17 +44,20 @@ return [
     'disks' => [
 
         'local' => [
+            'name'=>'local',
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
 
         'video' => [
+            'name'=>'video',
             'driver' => 'local',
             'root' => storage_path('app/public/videos'),
             'visibility'=>'public'
         ],
 
         'public' => [
+            'name'=>'public',
             'driver' => 'local',
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
@@ -62,6 +65,7 @@ return [
         ],
 
         's3' => [
+            'name'=>'s3',
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
@@ -71,6 +75,7 @@ return [
         ],
 
         'ftp' => [
+            'name'=>'ftp',
             'driver' => 'ftp',
             'host' => '',
             'username' => '',
@@ -85,6 +90,7 @@ return [
         ],
 
         'sftp' => [
+            'name'=>'sftp',
             'driver' => 'sftp',
             'host' => env('FTP_HOST'),
             'username' => env('FTP_USERNAME'),
