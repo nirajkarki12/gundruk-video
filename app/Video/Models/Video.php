@@ -31,11 +31,12 @@ class Video extends Model
     public function getUrlAttribute($video)
     {
         return \public_path('storage/videos/'.$video);
-        return \URL::to('/').\Storage::url('videos/'.$video);
     }
 
     public function getImageAttribute($image)
     {
+        return \URL::to('storage/videos/'.$image);
+
         return \Storage::path('images/'.$image);
     }
     public function admin()
@@ -43,6 +44,11 @@ class Video extends Model
         return $this->belongsTo(Admin::class,'user_id');
     }
 
+    public function setPublishAtAttribute($publish_at)
+    {
+        $publish_date=new \DateTime($publish_at);
+        $this->attributes['publish_at']=$publish_date->format('Y-m-d H:i:s');
+    }
     public function user()
     {
         return $this->belongsTo(User::class);

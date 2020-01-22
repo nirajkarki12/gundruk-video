@@ -33,6 +33,17 @@
                 </ul>
             </li>
 
+            <li class="treeview" id="categories">
+                <a href="{{route('admin.videos')}}">
+                    <i class="fa fa-video-camera"></i> <span>Videos</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="view-videos"><a href="{{route('admin.videos')}}"><i class="fa fa-circle-o"></i>View Videos</a></li>
+                    <li id="add-video"><a href="{{route('admin.video.create')}}"><i class="fa fa-circle-o"></i>Add Video</a></li>
+                    <li id="view-deleted-video"><a href="{{route('admin.video.deleted')}}"><i class="fa fa-circle-o"></i>View Deleted</a></li>
+                </ul>
+            </li>
+
 
             <!-- place at bottom -->
             <li id="dashboard">

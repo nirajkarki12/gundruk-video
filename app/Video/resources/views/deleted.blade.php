@@ -31,6 +31,7 @@
                         <th>Image</th>
                         <th>Category</th>
                         <th>Status</th>
+                        <th>Deleted On</th>
                         <th>action</th>
                         </tr>
                     </thead>
@@ -44,6 +45,8 @@
                             </td>
                             <td>{{$video->category->name}}</td>
                             <td>{{$video->published?'Published':'Pending'}}</td>
+                            <td>{{$video->deleted_at}}</td>
+
                             <td>
                                 <ul class="admin-action btn btn-default">
                                     <li class="dropup">
@@ -52,13 +55,13 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="{{route('admin.category.edit' , array('slug' => $video->category->slug))}}">Edit</a>
+                                            <a role="menuitem" tabindex="-1" href="{{route('admin.video.undelete' , $video->slug)}}">Undelete</a>
                                         </li>
                                         <li role="presentation">
                                             <a role="menuitem" tabindex="-1" href="{{route('admin.video.show' , $video->slug)}}">Watch</a>
                                         </li>
                                         <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Are you sure?')" href="{{route('admin.video.delete' ,$video->slug)}}">Trash</a>
+                                            <a role="menuitem" tabindex="-1" onclick="return confirm('Delete Parmanently?')" href="{{route('admin.video.delete.parmanent' ,$video->slug)}}">Delete</a>
                                         </li>
 
                                     </ul>

@@ -152,6 +152,7 @@
             },
             success:function(response){
                 alert("Upload Successfull");
+                console.log(response);
                 location.reload();
             },
             error:function(error){

@@ -28,6 +28,7 @@ class CreateVideosTable extends Migration
             //$table->foreign('user_id')->references('id')->on('mysql2.users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->softDeletes();
+            $table->timestamp('publish_at')->nullable();
             $table->timestamps();
         });
     }

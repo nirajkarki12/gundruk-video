@@ -23,11 +23,13 @@ class VideoController extends Controller
 {
     protected $videoRepo;
     protected $categoryRepo,$tagModel;
+    protected $disk;
     public function __construct(VideoRepository $videoRepo,CategoryRepository $categoryRepo,Tag $tagModel)
     {
         $this->videoRepo=$videoRepo;
         $this->categoryRepo=$categoryRepo;
         $this->tagModel=$tagModel;
+        $this->disk=Storage::disk('video');
     }
     
     public function upload(Request $request)
@@ -84,8 +86,7 @@ class VideoController extends Controller
         $filePath = "ftp/{$mime}/{$dateFolder}/";
         //$finalPath = storage_path("app/".$filePath);
         // move the file name
-        $disk=Storage::disk('video');
-        $disk->put($filePath.$fileName,\fopen($file,'r+'));
+        $this->disk->put($filePath.$fileName,\fopen($file,'r+'));
 
         // $file->move($finalPath, $fileName);
         return ['path'=>$filePath,'name'=>$fileName,'mime'=>$mime];
@@ -135,7 +136,6 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        $publish_date=new \DateTime($request->publish_at);
         try
         {
             $validator=Validator::make($request->all(),[
@@ -151,14 +151,19 @@ class VideoController extends Controller
                 throw new \Exception($validator->errors()->first(),1);
             }
             $input=$request->all();
-            $detail=$this->saveFile($request->video);
+
+            $videoDetail=$this->saveFile($request->video);
 
             if($request->has('image'))
             {
-                $input['image']=Helper::uploadImage($request->image, 'videos/images');
+                $imageDetail=$this->saveFile($request->image);
             }
+
             $input['user_id']=auth()->guard('admin')->user()->id;
-            $input['url']=$detail['path'].$detail['name'];
+
+            $input['url']=$videoDetail['path'].$videoDetail['name'];
+
+            $input['image']=$imageDetail['path'].$imageDetail['name'];
             if($this->videoRepo->create($input))
             {
                 return response()->json([
@@ -190,9 +195,7 @@ class VideoController extends Controller
     {
         $video=$this->videoRepo->show($slug);
         $stream=new Stream($video->url);
-        return response()->stream(function() use ($stream){
-            $stream->start();
-        });
+        return $stream->start();
     }
 
     /**
@@ -221,9 +224,52 @@ class VideoController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        try {
+            $this->videoRepo->delete($slug);
+            return redirect()->route('admin.videos')->with('flash_success','Video deleted successfully');
+        } catch (\Throwable $th) {
+            return back()->with('flash_error',$th->getMessage());
+        }
+    }
+
+    public function deleted()
+    {
+        $videos=$this->videoRepo->deleted();
+        return view('video::deleted',compact('videos'));
+    }
+
+    public function unDelete($slug)
+    {
+        try {
+            $this->videoRepo->unDelete($slug);
+            return redirect()->route('admin.videos')->with('flash_success','Video undeleted');
+        } catch (\Throwable $th) {
+            return back()->with('flash_error','Video can not be undelete');
+        }
+    }
+
+    public function parmanentDestroy($slug)
+    {
+        try {
+            $this->videoRepo->parmanentDestroy($slug);
+            return redirect()->route('admin.videos.deleted')->with('flash_success','Video deleted successfully');
+        } catch (\Throwable $th) {
+            return back()->with('flash_error',$th->getMessage());
+        }
+    }
+
+    public function list()
+    {
+        $files=array();
+        $directories=$this->disk->allDirectories();
+        foreach($directories as $directory)
+        {
+            if($this->disk->files($directory))
+                array_push($files,$this->disk->files($directory));
+        }
+        return $files;
     }
 
 }
