@@ -152,11 +152,9 @@
             },
             success:function(response){
                 alert("Upload Successfull");
-                console.log(response);
                 location.reload();
             },
             error:function(error){
-                console.log(error);
                 alert(error.responseJSON.message);
             }
         });

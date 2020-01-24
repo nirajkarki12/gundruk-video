@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoTagTable extends Migration
+class CreateTagVideoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateVideoTagTable extends Migration
      */
     public function up()
     {
-        Schema::create('video_tag', function (Blueprint $table) {
+        Schema::create('tag_video', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('video_id');
             $table->unsignedBigInteger('tag_id');
+            $table->unsignedInteger('video_id');
 
             $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');

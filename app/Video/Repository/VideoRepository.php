@@ -7,14 +7,15 @@ use App\Video\Models\Video;
 use Illuminate\Support\Facades\Storage;
 use App\Common\Http\Helpers\Settings;
 use App\Common\Repository\MainRepository;
-
+use App\Tag\Repository\TagRepository;
 class VideoRepository extends MainRepository
 {
-    protected $video,$disk;
-    public function __construct(Video $video)
+    protected $video,$disk,$tagRepo;
+    public function __construct(Video $video,TagRepository $tagRepo)
     {
         parent::__construct();
         $this->video=$video;
+        $this->tagRepo=$tagRepo;
         $this->disk=Storage::disk($this->uploadDisk);
     }
     public function all()
@@ -31,8 +32,13 @@ class VideoRepository extends MainRepository
         $input['category_id']=$data['category_id'];
         $input['user_id']=$data['user_id'];
         $input['publish_at']=$data['publish_at'];
-        if($this->video::create($input))
+        if($video=$this->video::create($input))
         {
+            $tags=explode(',',$data['tag']);
+            foreach($tags as $tag)
+            {
+                $video->tags()->attach($this->tagRepo->store(['name'=>$tag]));
+            }
             return true;
         }
         return false;

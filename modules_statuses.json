@@ -5,5 +5,6 @@
     "Setting": true,
     "Category": true,
     "Video": true,
-    "Tag": true
+    "Tag": true,
+    "Channel": true
 }

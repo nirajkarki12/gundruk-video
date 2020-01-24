@@ -19,6 +19,7 @@ use App\Common\Http\Helpers\Helper;
 use Storage;
 use Carbon\Carbon;
 use App\Video\Stream\Stream;
+use App\Common\Http\Helpers\Settings;
 class VideoController extends Controller
 {
     protected $videoRepo;
@@ -29,7 +30,7 @@ class VideoController extends Controller
         $this->videoRepo=$videoRepo;
         $this->categoryRepo=$categoryRepo;
         $this->tagModel=$tagModel;
-        $this->disk=Storage::disk('video');
+        $this->disk=Storage::disk(Settings::get('uploaddisk'));
     }
     
     public function upload(Request $request)
@@ -254,7 +255,7 @@ class VideoController extends Controller
     {
         try {
             $this->videoRepo->parmanentDestroy($slug);
-            return redirect()->route('admin.videos.deleted')->with('flash_success','Video deleted successfully');
+            return redirect()->route('admin.video.deleted')->with('flash_success','Video deleted successfully');
         } catch (\Throwable $th) {
             return back()->with('flash_error',$th->getMessage());
         }

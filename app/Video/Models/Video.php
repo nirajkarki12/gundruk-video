@@ -9,6 +9,8 @@ use App\user\Models\User;
 use App\User\Models\Admin;
 use App\Tag\Models\Tag;
 use App\Category\Models\Category;
+use App\Common\Http\Helpers\Settings;
+use Storage;
 class Video extends Model
 {
     use SoftDeletes,Sluggable;
@@ -30,6 +32,8 @@ class Video extends Model
 
     public function getUrlAttribute($video)
     {
+        // return Storage::disk(Settings::get('uploaddisk'))->get($video);
+        return Storage::disk(Settings::get('uploaddisk'))->path($video);
         return \public_path('storage/videos/'.$video);
     }
 

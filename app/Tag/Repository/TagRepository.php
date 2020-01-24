@@ -11,7 +11,7 @@ class TagRepository
 
     public function store($data=[])
     {
-        $this->tagModel::create($data);
+        return $this->tagModel::firstOrCreate($data);
     }
     
 }

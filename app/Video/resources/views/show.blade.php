@@ -18,7 +18,7 @@
         <div class="box-header">
         </div>
         <div class="box-body">
-            <video src="{{route('admin.video.stream',$slug)}}" controls height="300" autoplay></video>            
+            <video src="{{route('admin.video.stream',$slug)}}" controls height="300" poster="{{$video->image}}"></video>            
             <!-- <video src="{{route('admin.video.stream',$slug)}}" controls height="300"></video>             -->
         </div>
       </div>
