@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use App\Channel\Interfaces\ChannelInterface;
 use App\Common\Http\Helpers\Helper;
 use Illuminate\Support\Facades\Validator;
+use App\Channel\Models\Channel;
 class ChannelController extends Controller
 {
     protected $repo;
@@ -22,7 +23,7 @@ class ChannelController extends Controller
     public function index()
     {
         $channels=$this->repo->all();
-        return $channels;
+        // return $channels;
         return view('channel::index',compact('channels'));
     }
 
@@ -30,9 +31,9 @@ class ChannelController extends Controller
      * Show the form for creating a new resource.
      * @return Response
      */
-    public function create()
+    public function create(Channel $channel=null)
     {
-        return view('channel::create');
+        return view('channel::create',compact('channel'));
     }
 
     /**
@@ -40,14 +41,18 @@ class ChannelController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request,Channel $channel=null)
     {
         try
         {
-            $validator=Validator::make($request->all(),[
-                'name'=>'required|max:255',
-                'image'=>'required|mimes:png,jpg,jpeg'
-            ]);
+            $messages=array('name'=>'required|max:255');
+
+            if(!$channel)
+            {
+                $messages['image']='required|mimes:png,jpg,jpeg';
+            }
+
+            $validator=Validator::make($request->all(),$messages);
             if($validator->fails())
             {
                 throw new \Exception($validator->errors()->first(),1);
@@ -55,13 +60,28 @@ class ChannelController extends Controller
             $input=$request->all();
             if($request->has('image'))
             {
+                if($channel)
+                {
+                    Helper::deleteImage($channel->getOriginal('image'),'channel');
+                }
                 $input['image']=Helper::uploadImage($request->image,'channel');
             }
 
             $input['user_id']=auth()->guard('admin')->user()->id;
-            if($this->repo->create($input))
+
+            $status=false;
+            if($channel)
             {
-                return redirect()->route('admin.channels')->with('flash_success','Channel Created');
+                $status=$this->repo->update($input,$channel);
+            }
+            else
+            {
+                $status=$this->repo->create($input);
+            }
+
+            if($status)
+            {
+                return redirect()->route('admin.channels')->with('flash_success','Channel'.$channel?' updated':' created');
             }
             else
             {
@@ -108,8 +128,13 @@ class ChannelController extends Controller
      * @param int $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        try {
+            $this->repo->delete($slug);
+            return back()->with('flash_success','Channel deleted');
+        } catch (\Throwable $th) {
+            return back()->with('flash_error',$th->getMessage());
+        }
     }
 }

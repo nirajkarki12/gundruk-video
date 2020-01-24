@@ -18,12 +18,13 @@ class Helper
   }
 
   public static function deleteImage($image, $folder) {
-    $path = storage_path('app/public/'.$folder).'/'.$image;
+    $path = storage_path('app/public/'.$folder.'/'.$image);
     if(File::exists($path))
     {
-      File::delete( $path);
+      if(File::delete( $path))
+        return true;
     }
-    return true;
+    return false;
   }
 
   public static function fileName() {

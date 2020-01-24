@@ -13,6 +13,8 @@
 
 Route::prefix('admin/channel')->middleware('admin')->group(function() {
     Route::get('/', 'ChannelController@index')->name('admin.channels');
-    Route::get('/create', 'ChannelController@create')->name('admin.channel.create');
-    Route::post('/store', 'ChannelController@store')->name('admin.channel.store');
+    Route::get('/create/{channel?}', 'ChannelController@create')->name('admin.channel.create');
+    Route::post('/store/{channel?}', 'ChannelController@store')->name('admin.channel.store');
+    Route::get('/delete/{slug}', 'ChannelController@destroy')->name('admin.channel.delete');
+
 });

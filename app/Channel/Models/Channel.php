@@ -23,7 +23,7 @@ class Channel extends Model
     {
         return \URL::to('storage/channel/'.$image);
     }
-    
+
     public function setSlugAttribute($slug)
     {
         $this->attributes['slug']=md5($slug.time());
