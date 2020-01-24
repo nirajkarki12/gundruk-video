@@ -28,8 +28,18 @@
                     <i class="fa fa-suitcase"></i> <span>Categories</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="add-category"><a href="{{route('admin.category.create')}}"><i class="fa fa-circle-o"></i>Add Category</a></li>
-                    <li id="view-categories"><a href="{{route('admin.category')}}"><i class="fa fa-circle-o"></i>View Categories</a></li>
+                    <li id="view-categories"><a href="{{route('admin.category')}}"><i class="fa fa-eye"></i>View Categories</a></li>
+                    <li id="add-category"><a href="{{route('admin.category.create')}}"><i class="fa fa-plus"></i>Add Category</a></li>
+                </ul>
+            </li>
+
+            <li class="treeview" id="categories">
+                <a href="{{route('admin.channels')}}">
+                    <i class="fa fa-television"></i> <span>Channels</span> <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu">
+                    <li id="view-videos"><a href="{{route('admin.channels')}}"><i class="fa fa-eye"></i>View Channels</a></li>
+                    <li id="add-video"><a href="{{route('admin.channel.create')}}"><i class="fa fa-plus"></i>Add Channel</a></li>
                 </ul>
             </li>
 
@@ -38,9 +48,9 @@
                     <i class="fa fa-video-camera"></i> <span>Videos</span> <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li id="view-videos"><a href="{{route('admin.videos')}}"><i class="fa fa-circle-o"></i>View Videos</a></li>
-                    <li id="add-video"><a href="{{route('admin.video.create')}}"><i class="fa fa-circle-o"></i>Add Video</a></li>
-                    <li id="view-deleted-video"><a href="{{route('admin.video.deleted')}}"><i class="fa fa-circle-o"></i>View Deleted</a></li>
+                    <li id="view-videos"><a href="{{route('admin.videos')}}"><i class="fa fa-eye"></i>View Videos</a></li>
+                    <li id="add-video"><a href="{{route('admin.video.create')}}"><i class="fa fa-plus"></i>Add Video</a></li>
+                    <li id="view-deleted-video"><a href="{{route('admin.video.deleted')}}"><i class="fa fa-trash"></i>View Deleted</a></li>
                 </ul>
             </li>
 
