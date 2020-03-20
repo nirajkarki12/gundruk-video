@@ -38,8 +38,29 @@
                                         <input type="text" class="form-control" name="title" value="" id="title" placeholder="Enter video title">
                                     </div>
                                 </div>
+
+
                                 <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="sitename">Video Type</label><br>
+                                        <select onchange="videoCheck(this);" name="type" id="type" required>
+                                            <option value="">--Select--</option>
+                                            <option value="file">Video File</option>
+                                            <option value="link">Video Link</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" id="linkUploadPart" style="display:none">
+                                    <div class="form-group">
+                                        <label for="sitename">Video Link *</label>
+                                        <input type="text" class="form-control" name="link" value="" id="link" placeholder="Enter video link">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" id="videoUploadPart" style="display:none">
                                     <div class="form-group video-upload">
+                                        <label for="sitename">Video File *</label>
                                         <div class="video-upload text-center" style="border: solid 1px #ccc;">
                                             <div id="resumable-drop">
                                                 <label for="video" style="cursor:pointer">
@@ -47,6 +68,7 @@
                                                 </label>
                                                 <input type="file" id="video" data-url="{{route('admin.video.create')}}" name="video" class="form-control" style="display:none">
                                                 <p class="help-block">Video File Only *</p>
+                                                <span id="video_name"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -125,6 +147,12 @@
 @section('scripts')
 <script src="http://malsup.github.com/jquery.form.js"></script> 
 <script type="text/javascript">
+
+$('#video').change(function(){
+    let videoName = $('#video')[0].files[0].name;
+    $('#video_name').text(videoName); 
+})
+
  $('#form-upload').submit(function(e){
      e.preventDefault();
     $.ajax({
@@ -152,13 +180,35 @@
             },
             success:function(response){
                 alert("Upload Successfull");
-                location.reload();
+                $('.progress-bar').width(0);
+                console.log(response)
+                //location.reload();
             },
             error:function(error){
+                console.log(error);
+                $('.progress-bar').width(0);
                 alert(error.responseJSON.message);
             }
         });
     });
 
+
+    function videoCheck(that) {
+
+        if(that.value == 'link') {
+            $('#linkUploadPart').show();
+            $('#videoUploadPart').hide();
+            $('#video').val('');
+            $('#video_name').text('');
+        }
+        else if(that.value == 'file') {
+            $('#videoUploadPart').show();
+            $('#linkUploadPart').hide();
+            $('#link').val('');
+        } else {
+            $('#linkUploadPart').hide();
+            $('#videoUploadPart').hide();
+        }
+    }
 </script>
 @endsection

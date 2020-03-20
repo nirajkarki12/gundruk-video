@@ -20,7 +20,7 @@ class Settings
 
 		if($setting && $setting->value)
 		{
-			return env('APP_URL').'/storage/logo/'.$setting->value;
+			return \URL::to('/storage/logo/'.$setting->value);
 		}
 	}
 }

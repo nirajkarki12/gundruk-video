@@ -13,8 +13,9 @@ use App\Common\Http\Helpers\Settings;
 use Storage;
 class Video extends Model
 {
-    use SoftDeletes,Sluggable;
-    protected $guarded = [];
+    use SoftDeletes, Sluggable;
+
+    protected $fillable = ['title','type','image','category_id','user_id','publish_at','slug','url','description'];
 
     public function sluggable()
     {

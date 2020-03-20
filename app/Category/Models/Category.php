@@ -13,7 +13,7 @@ class Category extends Model
 
 	public function setImageAttribute($image) {
 		$this->attributes['image'] = $image;
-		$this->attributes['image_full_path'] = env('APP_URL') .'/storage/category/' .$image;
+		$this->attributes['image_full_path'] = \URL::to('/storage/category/' .$image);
 	}
 
 	public function categories()

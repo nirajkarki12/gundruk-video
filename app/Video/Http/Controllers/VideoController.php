@@ -139,38 +139,52 @@ class VideoController extends Controller
     {
         try
         {
-            $validator=Validator::make($request->all(),[
+            $validator = Validator::make($request->all(),[
                 'title'=>'required|max:255',
-                'video'=>'required',
                 'tag'=>'required',
                 'description'=>'required',
                 'image'=>'required',
                 'category_id'=>'required',
+                'type'=>'required'
             ]);
-            if($validator->fails())
-            {
-                throw new \Exception($validator->errors()->first(),1);
-            }
-            $input=$request->all();
 
-            $videoDetail=$this->saveFile($request->video);
+            if($validator->fails()) throw new \Exception($validator->errors()->first(),1);
+            
+            if(!$request->link) {
+
+                $validator = Validator::make($request->all(),[
+                    'video' => 'required|mimes:mp4,3gp,avi,mpg,flv'
+                ]);
+                if($validator->fails()) throw new \Exception($validator->errors()->first(),1);
+            }
+
+            $input = $request->all();
+
+
+            if(!$request->has('link'))
+            {
+                $videoDetail=$this->saveFile($request->video);
+                $input['url']=$videoDetail['path'].$videoDetail['name'];
+            } else {
+                $input['url'] = $request->link;
+            }
 
             if($request->has('image'))
             {
                 $imageDetail=$this->saveFile($request->image);
             }
 
-            $input['user_id']=auth()->guard('admin')->user()->id;
+            $input['user_id'] = auth()->guard('admin')->user()->id;
 
-            $input['url']=$videoDetail['path'].$videoDetail['name'];
 
-            $input['image']=$imageDetail['path'].$imageDetail['name'];
+            $input['image'] = $imageDetail['path'].$imageDetail['name'];
+            
             if($this->videoRepo->create($input))
             {
                 return response()->json([
                     'status'=>true,
                     'message'=>'Video created successfully'
-                ]);
+                ],200);
             }
             else
             {
@@ -194,8 +208,14 @@ class VideoController extends Controller
 
     public function stream($slug)
     {
-        $video=$this->videoRepo->show($slug);
-        $stream=new Stream($video->url);
+        $video = $this->videoRepo->show($slug);
+
+        try {
+            $stream = new Stream($video->url);
+        } catch (\Throwable $th) {
+            
+        }
+        
         return $stream->start();
     }
 

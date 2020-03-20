@@ -15,9 +15,9 @@ class Stream
     private $end    = -1;
     private $size   = 0;
  
-    function __construct($filePath) 
+    function __construct($url) 
     {
-        $this->path = $filePath;
+        $this->path = $url;
     }
      
     /**
@@ -28,7 +28,6 @@ class Stream
         if (!($this->stream = fopen($this->path, 'rb'))) {
             die('Could not open stream for reading');
         }
-         
     }
      
     /**
